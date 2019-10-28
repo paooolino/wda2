@@ -1,0 +1,28 @@
+*{padding:0;margin:0;}
+html,body{height:100%;font-family: 'Roboto', sans-serif;}
+#container{
+  display:flex;
+  flex-direction:column; /* The flexible items are displayed vertically, as a column */
+  height:100%;
+}
+.col{position:relative;}
+#editor { 
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.sidebar{flex: 0 0 250px;}
+.header{}
+.bodycontent{flex: 1;}
+.header .pill-nav{display:inline-block;white-space:nowrap;
+border-right:3px double #ccc;}
+.listmenu{border-top: 1px solid #aaa;}
+.listmenu li{
+  display:block;
+  padding:10px 10px;
+  border-bottom:1px solid #aaa;
+}
+.listmenu li:hover{background-color:#ddd;}
+button{display:block;width:100%;padding:10px 0;}
