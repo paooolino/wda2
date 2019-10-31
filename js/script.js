@@ -55,9 +55,9 @@ $('.topbuttons_f a').on('click', function() {
   });
 });
 
-$('.topbuttons_d a').on('click', function() {
+$('.sidebar_header button').on('click', function() {
   var d = $(this).data('dir');
-  $('.header a').removeClass('active');
+  $('.sidebar_header button').removeClass('active');
   $(this).addClass('active');
   $.ajax({
     url: 'php/getdir.php',
@@ -70,4 +70,23 @@ $('.topbuttons_d a').on('click', function() {
       editor.session.setValue('');
     }
   });
+});
+
+$('button.add').on('click', function() {
+  var d = $('.sidebar_header button.active').data('dir');
+  $('.listmenu .add_input').val('Senza nome');
+  $('.listmenu .add_input').show().select();
+  /*
+  $.ajax({
+    url: 'php/add.php',
+    type: 'post',
+    dataType: 'json',
+    data: {
+      dir: d
+    },
+    success: function(json) {
+      console.log(json);
+    }
+  });
+  */
 });

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/silver.css">
   <link rel="stylesheet" href="css/pill-nav.css">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://kit.fontawesome.com/e6666a068f.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="container">
@@ -22,25 +23,26 @@
         <a data-file="composer.json">composer.json</a>
         <a data-file="index.php">index.php</a>
       </div>
-      <div class="pill-nav topbuttons_d">
+      <!--<div class="pill-nav topbuttons_d">
         <a data-dir="app/Controller">Controllers</a>
         <a data-dir="app/Model">Models</a>
         <a data-dir="app">Services</a>
         <a data-dir="app/Middleware">Middlewares</a>
-      </div>
+      </div>-->
     </div>
     <div class="grid bodycontent">
       <div class="col sidebar">
-        <!--
+        <div class="sidebar_header">
+          <button data-dir="app/Controller" title="Controllers"><i class="fas fa-gamepad"></i></button>
+          <button data-dir="app/Model" title="Models"><i class="fas fa-database"></i></button>
+          <button data-dir="app" title="Services"><i class="fas fa-hand-holding"></i></button>
+          <button data-dir="app/Middleware" title="Middlewares"><i class="fas fa-bullseye"></i></button>
+          <div class="close"></div>
+        </div>
         <ul class="listmenu">
-          <li>HOME</li>
-          <li>LOGIN</li>
-          <li>LOGIN_POST</li>
-          <li>DASHBOARD</li>
-          <li>MESSAGE</li>
+          <li class="add_input_li"><input class="add_input"></li>
         </ul>
-        <p><button>add</button></p>
-        -->
+        <p><button class="add">add</button></p>
       </div>
       <div class="col bigger">
         <div id="editor"></div>

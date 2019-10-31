@@ -24,5 +24,15 @@ border-right:3px double #ccc;}
   padding:10px 10px;
   border-bottom:1px solid #aaa;
 }
+.listmenu li.add_input_li{padding:0;}
+.listmenu li.add_input_li input{width:100%;padding:10px;display:none;}
 .listmenu li:hover{background-color:#ddd;}
 button{display:block;width:100%;padding:10px 0;}
+.sidebar_header button{
+  float:left;width:25%;
+}
+.sidebar_header button.active{
+  background-color: dodgerblue;
+  color: white;
+}
+.close{clear:both;}
