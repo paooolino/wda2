@@ -1,7 +1,3 @@
-<?php
-  include("functions.php");
-  
-?>
 <!doctype html>
 <html>
 <head>
@@ -35,21 +31,25 @@
         <div class="sidebar_header">
           <button data-dir="app/Controller" title="Controllers"><i class="fas fa-gamepad"></i></button>
           <button data-dir="app/Model" title="Models"><i class="fas fa-database"></i></button>
-          <button data-dir="app" title="Services"><i class="fas fa-hand-holding"></i></button>
+          <button data-dir="app/src" title="Services"><i class="fas fa-hand-holding"></i></button>
           <button data-dir="app/Middleware" title="Middlewares"><i class="fas fa-bullseye"></i></button>
           <div class="close"></div>
         </div>
         <ul class="listmenu">
-          <li class="add_input_li"><input class="add_input"></li>
         </ul>
+        <input class="add_input">
         <p><button class="add">add</button></p>
       </div>
       <div class="col bigger">
+        <div class="editor_bar"></div>
         <div id="editor"></div>
       </div>
     </div>
   </div>
-  
+  <div id="loading_layer">
+    <div class="loading_bg"></div>
+    <p><i class="fas fa-sync-alt fa-spin"></i> Loading...</p>
+  </div>
   <script src="lib/jquery/jquery-3.4.1.min.js"></script>
   <script src="lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/script.js"></script>

@@ -16,7 +16,11 @@ if (!file_exists($path)) {
 }
 
 $arr = scandir($path);
-
+$arr = array_values(array_filter($arr, function($item) {
+  if ($item == "." || $item == "..")
+    return false;
+  return true;
+}));
 $result = [
   "new" => false,
   "content" => $arr

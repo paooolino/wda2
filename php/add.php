@@ -1,20 +1,18 @@
 <?php
+include("functions.php");
+
 /**
- *  @param string $file The file name to load.
+ *  @param string $dir the directory in which to save the file
+ *  @param string $file The file name to save.
  */
 
+$dir = __DIR__ . '/../../' . $_POST["dir"];
 $file = $_POST["file"];
 
-$content = file_get_contents(__DIR__ . "/../../" . $file);
-$new = false;
-
-if (!$file) {
-  $content = file_get_contents(__DIR__ . "/../files_defaults/" . $file);
-  $new = true;
-} 
+$content = "<?php\r\n";
+$result = create_file($dir, $file, $content);
 
 $result = [
-  "new" => $new,
-  "content" => $content
+  "result" => $result
 ];
 echo json_encode($result);

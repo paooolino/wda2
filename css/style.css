@@ -8,26 +8,34 @@ html,body{height:100%;font-family: 'Roboto', sans-serif;}
 .col{position:relative;}
 #editor { 
   position: absolute;
-  top: 0;
+  top: 20px;
   right: 0;
   bottom: 0;
   left: 0;
 }
+.editor_bar{
+  background-color:#333;
+  color:#ccc;
+  padding: 2px 5px;
+  font-size:10pt;
+}
+.col.bigger{background-color:#ccc;}
 .sidebar{flex: 0 0 250px;}
 .header{}
 .bodycontent{flex: 1;}
 .header .pill-nav{display:inline-block;white-space:nowrap;
 border-right:3px double #ccc;}
+.header .pill-nav a{cursor:pointer;}
 .listmenu{border-top: 1px solid #aaa;}
 .listmenu li{
   display:block;
   padding:10px 10px;
   border-bottom:1px solid #aaa;
 }
-.listmenu li.add_input_li{padding:0;}
-.listmenu li.add_input_li input{width:100%;padding:10px;display:none;}
+input.add_input{width:100%;padding:10px;display:none;}
+.listmenu li{cursor:pointer;}
 .listmenu li:hover{background-color:#ddd;}
-button{display:block;width:100%;padding:10px 0;}
+button{display:block;width:100%;padding:10px 0;cursor:pointer;}
 .sidebar_header button{
   float:left;width:25%;
 }
@@ -36,3 +44,31 @@ button{display:block;width:100%;padding:10px 0;}
   color: white;
 }
 .close{clear:both;}
+.listmenu li.active{
+  background-color: dodgerblue !important;
+  color: white;
+}
+#loading_layer {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  z-index:10000;
+  display:none;
+}
+#loading_layer p {
+  position: absolute;
+  width:100vw;
+  top:30vh;
+  left:0;
+  text-align:center;
+  font-size:28pt;
+}
+.loading_bg {
+  display:block;
+  width:100%;
+  height:100%;
+  background-color:white;
+  opacity:0.3;
+}

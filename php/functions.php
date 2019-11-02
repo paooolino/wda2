@@ -1,15 +1,13 @@
 <?php
 define("ROOT", __DIR__ . "/../");
 
-function create_file($dir, $filename, $code, $force=true) {
+function create_file($dir, $filename, $code) {
   if (!is_dir($dir))
     mkdir($dir, 0777, true);  
   
   $file = $dir . '/' . $filename;
-  
-  $code = $this->preserve_developer_code($file, $code);
-  
-  if ($force || !file_exists($file))
+
+  if (!file_exists($file))
     file_put_contents($file, $code);
 }
   
