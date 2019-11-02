@@ -1,5 +1,5 @@
 <?php
-define("ROOT", __DIR__ . "/../");
+define("ROOT", __DIR__ . "/../../");
 
 function create_file($dir, $filename, $code) {
   if (!is_dir($dir))

@@ -1,3 +1,7 @@
+<?php
+  include("php/functions.php");
+  checkEssentials();
+?>
 <!doctype html>
 <html>
 <head>
