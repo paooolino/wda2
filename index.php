@@ -42,6 +42,8 @@
         </div>
         <ul class="listmenu">
         </ul>
+        <ul class="listmenu_template">
+        </ul>
         <input class="add_input">
         <p><button class="add">add</button></p>
       </div>
