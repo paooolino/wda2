@@ -46,7 +46,7 @@
         <p><button class="add">add</button></p>
       </div>
       <div class="col bigger">
-        <div class="editor_bar"></div>
+        <div class="editor_bar">&nbsp;</div>
         <div id="editor"></div>
       </div>
     </div>

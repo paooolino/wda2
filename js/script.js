@@ -1,22 +1,51 @@
-// ace editor init
-var editor = ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
-editor.session.setMode("ace/mode/php");
-editor.setOptions({
-  fontSize: "14pt",
-  tabSize: 2,
-  useSoftTabs: true
-});
-editor.commands.addCommand({
-  name: 'save',
-  bindKey: {win: "Ctrl-S", "mac": "Cmd-S"},
-  exec: save
-});
-editor.on('input', function(delta) {
-  console.log('input');
-  state.edited = !editor.session.getUndoManager().isClean();
-  render();
-});
+function init() {
+  // ace editor init
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.session.setMode("ace/mode/php");
+  editor.setOptions({
+    fontSize: "14pt",
+    tabSize: 2,
+    useSoftTabs: true
+  });
+  
+  //  ace editor save function
+  function save() {
+    $('#saving').show();
+    $.ajax({
+      url: 'php/save.php',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        file: state.current_file,
+        value: editor.session.getValue()
+      },
+      failure: function() {
+        alert('failed');
+      },
+      success: function(json) {
+        if (json.result) {
+          $('#saving').hide();
+          state.edited = false;
+          render();
+        } else {
+          alert('WARNING: save failed.');
+        }
+      }
+    });
+  }
+
+  editor.commands.addCommand({
+    name: 'save',
+    bindKey: {win: "Ctrl-S", "mac": "Cmd-S"},
+    exec: save
+  });
+  editor.on('input', function(delta) {
+    console.log('input');
+    state.edited = !editor.session.getUndoManager().isClean();
+    render();
+  });
+}
 
 var to = {};
 var state = {
@@ -28,6 +57,13 @@ var state = {
   mode: 'logic'
 };
 
+function render() {
+  
+}
+
+init();
+
+/*
 function render() {
   console.log('render');
   
@@ -176,32 +212,7 @@ function add_file() {
     });
   }
 }
- 
-//  ace editor save function
-function save() {
-  $('#saving').show();
-  $.ajax({
-    url: 'php/save.php',
-    type: 'post',
-    dataType: 'json',
-    data: {
-      file: state.current_file,
-      value: editor.session.getValue()
-    },
-    failure: function() {
-      alert('failed');
-    },
-    success: function(json) {
-      if (json.result) {
-        $('#saving').hide();
-        state.edited = false;
-        render();
-      } else {
-        alert('WARNING: save failed.');
-      }
-    }
-  });
-}
+
 
 // change editor mode
 $('.editor_mode a').on('click', function() {
@@ -243,3 +254,5 @@ function init() {
 }
 
 init();
+
+*/
