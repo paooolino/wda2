@@ -15,6 +15,13 @@
 <body>
   <div id="container">
     <div class="header">
+      <div class="pill-nav editor_mode">
+        <a id="button_logic" title="App logic"><i class="fas fa-project-diagram"></i></a>
+        <a id="button_template" title="App template"><i class="far fa-file-code"></i></a>
+      </div>
+      <div class="pill-nav">
+        <a title="Launch app" target="_blank" href="../index.php"><i class="fas fa-external-link-alt"></i></a>
+      </div>
       <div class="pill-nav topbuttons_f">
         <a data-file="app/routes.php">routes.php</a>
         <a data-file="app/dependencies.php">dependencies.php</a>
@@ -23,12 +30,6 @@
         <a data-file="composer.json">composer.json</a>
         <a data-file="index.php">index.php</a>
       </div>
-      <!--<div class="pill-nav topbuttons_d">
-        <a data-dir="app/Controller">Controllers</a>
-        <a data-dir="app/Model">Models</a>
-        <a data-dir="app">Services</a>
-        <a data-dir="app/Middleware">Middlewares</a>
-      </div>-->
     </div>
     <div class="grid bodycontent">
       <div class="col sidebar">

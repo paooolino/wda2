@@ -33,3 +33,10 @@ function checkEssentials() {
     }
   }
 }
+
+function populate_template($tpl, $data) {
+  foreach ($data as $k => $v) {
+    $tpl = str_replace("{{".$k."}}", $v, $tpl);
+  }
+  return $tpl;
+}

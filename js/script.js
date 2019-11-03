@@ -18,13 +18,14 @@ editor.on('input', function(delta) {
   render();
 });
 
-var to;
+var to = {};
 var state = {
   current_file: '',
   current_dir: '',
   show_file_input: false,
   edited: false,
-  files_list: []
+  files_list: [],
+  mode: 'logic'
 };
 
 function render() {
@@ -80,23 +81,41 @@ function render() {
   if (state.edited === true)
     appendix = '*';
   $('.editor_bar').html('&nbsp;[' + state.current_file + ']' + appendix);
+
+  // mode: logic/template button
+  $('.editor_mode a').removeClass('active');
+  $('#button_' + state.mode).addClass('active');   
+  
+  // mode: template
+  if (state.mode == 'template') {
+    $('.topbuttons_f').hide();
+    $('.sidebar_header').hide();
+  } else {
+    $('.topbuttons_f').show();
+    $('.sidebar_header').show();
+  }
 }
 
-function show_layer() {
-  to = setTimeout(function() {
+function show_layer(id) {
+  if (to[id]) {
+    clearTimeout(to[id]);
+    delete(to[id]);
+  }
+  to[id] = setTimeout(function() {
     $('#loading_layer').show();
   }, 500);
 }
 
-function hide_layer() {
-  try {
-    clearTimeout(to);
-  } catch(err) {};
+function hide_layer(id) {
+  if (to[id]) {
+    clearTimeout(to[id]);
+    delete(to[id]);
+  }
   $('#loading_layer').hide();
 }
 
 function load_dir() {
-  show_layer();
+  show_layer('load_dir');
   $.ajax({
     url: 'php/getdir.php',
     type: 'post',
@@ -107,13 +126,13 @@ function load_dir() {
     success: function(json) {
       state.files_list = json.content;
       render();
-      hide_layer();
+      hide_layer('load_dir');
     }
   });
 }
 
 function load_file() {
-  show_layer();
+  show_layer('load_file');
   $.ajax({
     url: 'php/getfile.php',
     type: 'post',
@@ -128,7 +147,7 @@ function load_file() {
       editor.session.setValue(content);
       state.edited = false;
       render();
-      hide_layer();
+      hide_layer('load_file');
     }
   });
 }
@@ -157,7 +176,7 @@ function add_file() {
     });
   }
 }
-  
+ 
 //  ace editor save function
 function save() {
   $('#saving').show();
@@ -183,6 +202,12 @@ function save() {
     }
   });
 }
+
+// change editor mode
+$('.editor_mode a').on('click', function() {
+  state.mode = this.id.replace('button_', '');
+  render();
+});
 
 // topbar buttons
 $('.topbuttons_f a').on('click', function() {
@@ -213,6 +238,7 @@ $('.add_input').on('keypress', function(e) {
 });
 
 function init() {
+  $('a[data-file="app/routes.php"]').trigger('click');
   $('button[data-dir="app/Controller"]').trigger('click');
 }
 
