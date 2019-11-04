@@ -18,7 +18,12 @@ function checkEssentials() {
     "settings.php",
     "app/dependencies.php",
     "app/routes.php",
-    "app/middleware.php"
+    "app/middleware.php",
+    "templates/default/css/style.css",
+    "templates/default/js/script.js",
+    "templates/default/partials/header.php",
+    "templates/default/partials/footer.php",
+    "templates/default/home.php"
   ];
   foreach ($essentials as $f) {
     $filename = ROOT . $f;

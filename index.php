@@ -34,10 +34,10 @@
     <div class="grid bodycontent">
       <div class="col sidebar">
         <div class="sidebar_header">
-          <button data-dir="app/Controller" title="Controllers"><i class="fas fa-gamepad"></i></button>
-          <button data-dir="app/Model" title="Models"><i class="fas fa-database"></i></button>
+          <button data-dir="app/src/Controller" title="Controllers"><i class="fas fa-gamepad"></i></button>
+          <button data-dir="app/src/Model" title="Models"><i class="fas fa-database"></i></button>
           <button data-dir="app/src" title="Services"><i class="fas fa-hand-holding"></i></button>
-          <button data-dir="app/Middleware" title="Middlewares"><i class="fas fa-bullseye"></i></button>
+          <button data-dir="app/src/Middleware" title="Middlewares"><i class="fas fa-bullseye"></i></button>
           <div class="close"></div>
         </div>
         <ul class="listmenu">

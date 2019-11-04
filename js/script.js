@@ -62,7 +62,7 @@ function init() {
 var to = {};
 var state = {
   current_file: 'app/routes.php',
-  current_dir: 'app/Controller',
+  current_dir: 'app/src/Controller',
   show_file_input: false,
   edited: false,
   files_list: [],
@@ -75,17 +75,37 @@ var state = {
  *  Render function
  */
 function render() {
-  // mode: logic/template button
-  $('.editor_mode a').removeClass('active');
-  $('#button_' + state.mode).addClass('active');   
-  
   // mode: template
   if (state.mode == 'template') {
     $('.topbuttons_f').hide();
     $('.sidebar_header').hide();
+    $('.listmenu').hide();
+    $('.listmenu_template').show();
   } else {
     $('.topbuttons_f').show();
     $('.sidebar_header').show();
+    $('.listmenu').show();
+    $('.listmenu_template').hide();
+  }
+  
+  // topbutton
+  $('.header a').removeClass('active');
+  $('.header a*[data-file="' + state.current_file + '"]').addClass('active');
+  
+  // sidebutton
+  $('.sidebar_header button').removeClass('active');
+  $('.sidebar_header button*[data-dir="' + state.current_dir + '"]').addClass('active');
+
+  // mode: logic/template button
+  $('.editor_mode a').removeClass('active');
+  $('#button_' + state.mode).addClass('active');   
+  
+  // sidebar: file input
+  $('.add_input').hide();
+  if (state.show_file_input) {
+    $('.add_input').show();
+    $('.add_input').val('Senza nome');
+    $('.add_input').select();
   }
   
   // current dir list
@@ -211,6 +231,36 @@ function loadCurrentTemplatePath() {
 }
 
 /**
+ *  Adds a new file in the current directory
+ */
+function add_file() {
+  if (state.show_file_input == false) {
+    state.show_file_input = true;
+    render();
+  } else {
+    // check name
+    // to do
+    
+    // save
+    show_layer('add_file');
+    $.ajax({
+      url: 'php/add.php',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        dir: state.current_dir,
+        file: $('.add_input').val()
+      },
+      success: function(json) {
+        state.show_file_input = false;
+        hide_layer('add_file');
+        loadCurrentDir();
+      }      
+    });
+  }
+}
+
+/**
  *  Actions functions
  */
  
@@ -222,27 +272,43 @@ $('.editor_mode a').on('click', function() {
 
 init();
 
+/**
+ *  Action: click on topbar (file) button
+ */
+$('.topbuttons_f a').on('click', function() {
+  state.current_file = $(this).data('file');
+  state.show_file_input = false;
+  render();
+  loadCurrentFile();
+});
 
+/**
+ *  Action: click on "add" file button
+ */
+$('button.add').on('click', function() {
+  add_file();
+});
+$('.add_input').on('keypress', function(e) {
+  if (e.which == 13) {
+    add_file();
+  }
+});
+
+/**
+ *  Action: click on sidebar header directory buttons
+ */
+$('.sidebar_header button').on('click', function() {
+  state.current_dir = $(this).data('dir');
+  state.show_file_input = false;
+  render();
+  loadCurrentDir();
+});
 
 /*
 function render() {
   console.log('render');
-  
-  // topbutton
-  $('.header a').removeClass('active');
-  $('.header a*[data-file="' + state.current_file + '"]').addClass('active');
-  
-  // sidebutton
-  $('.sidebar_header button').removeClass('active');
-  $('.sidebar_header button*[data-dir="' + state.current_dir + '"]').addClass('active');
-  
-  // sidebar: file input
-  $('.add_input').hide();
-  if (state.show_file_input) {
-    $('.add_input').show();
-    $('.add_input').val('Senza nome');
-    $('.add_input').select();
-  }
+    
+
   
   // editor
   if (state.current_file == '') {
@@ -285,61 +351,16 @@ function load_dir() {
 }
 
 
-function add_file() {
-  if (state.show_file_input == false) {
-    state.show_file_input = true;
-    render();
-  } else {
-    // check name
-    // to do
-    
-    // save
-    $.ajax({
-      url: 'php/add.php',
-      type: 'post',
-      dataType: 'json',
-      data: {
-        dir: state.current_dir,
-        file: $('.add_input').val()
-      },
-      success: function(json) {
-        state.show_file_input = false;
-        load_dir();
-      }      
-    });
-  }
-}
 
 
 
 
-// topbar buttons
-$('.topbuttons_f a').on('click', function() {
-  var f = $(this).data('file');
-  state.current_file = f;
-  state.show_file_input = false;
-  render();
-  load_file();
-});
 
-// sidebar directory buttons
-$('.sidebar_header button').on('click', function() {
-  var d = $(this).data('dir');
-  state.current_dir = d;
-  state.show_file_input = false;
-  render();
-  load_dir();
-});
 
-// new file button
-$('button.add').on('click', function() {
-  add_file();
-});
-$('.add_input').on('keypress', function(e) {
-  if (e.which == 13) {
-    add_file();
-  }
-});
+
+
+
+
 
 function init() {
   $('a[data-file="app/routes.php"]').trigger('click');
