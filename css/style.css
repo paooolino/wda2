@@ -20,13 +20,16 @@ html,body{height:100%;font-family: 'Roboto', sans-serif;}
   font-size:10pt;
 }
 .col.bigger{background-color:#ccc;}
-.sidebar{flex: 0 0 250px;}
+.sidebar{flex: 0 0 250px;height:100%;}
 .header{}
-.bodycontent{flex: 1;}
+.bodycontent{flex: 1;min-height:0;overflow:hidden;}
 .header .pill-nav{display:inline-block;white-space:nowrap;
 border-right:3px double #ccc;}
 .header .pill-nav a{cursor:pointer;}
-.listmenu, .listmenu_template {border-top: 1px solid #aaa;}
+.listmenu, .listmenu_template {border-top: 1px solid #aaa;
+  height: calc(100% - 78px);
+  overflow: scroll;
+}
 .listmenu li, .listmenu_template li{
   display:block;
   padding:10px 10px;
