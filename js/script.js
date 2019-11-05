@@ -79,18 +79,18 @@ function render() {
   if (state.mode == 'template') {
     $('.topbuttons_f').hide();
     $('.sidebar_header').hide();
-    $('.listmenu').hide();
-    $('.listmenu_template').show();
+    $('#listmenu').hide();
+    $('#listmenu_template').show();
   } else {
     $('.topbuttons_f').show();
     $('.sidebar_header').show();
-    $('.listmenu').show();
-    $('.listmenu_template').hide();
+    $('#listmenu').show();
+    $('#listmenu_template').hide();
   }
   
   // topbutton
-  $('.header a').removeClass('active');
-  $('.header a*[data-file="' + state.current_file + '"]').addClass('active');
+  $('#header a').removeClass('active');
+  $('#header a*[data-file="' + state.current_file + '"]').addClass('active');
   
   // sidebutton
   $('.sidebar_header button').removeClass('active');
@@ -109,15 +109,15 @@ function render() {
   }
   
   // current dir list
-  $('ul.listmenu li').off('click');
+  $('ul#listmenu li').off('click');
   var html = "";
   for (let i = 0; i < state.files_list.length; i++) {
     var filepath = state.current_dir + '/' + state.files_list[i];
     html += '<li data-file="' + filepath + '">' + state.files_list[i] + '</li>';
   }
-  $('ul.listmenu').html(html);
-  $('ul.listmenu li*[data-file="' + state.current_file + '"]').addClass('active');
-  $('ul.listmenu li').on('click', function() {
+  $('ul#listmenu').html(html);
+  $('ul#listmenu li*[data-file="' + state.current_file + '"]').addClass('active');
+  $('ul#listmenu li').on('click', function() {
     /*
     var f = $(this).data('file');
     state.current_file = f;
@@ -128,14 +128,14 @@ function render() {
   });
   
   // current template path list
-  $('ul.listmenu_template li').off('click');
+  $('ul#listmenu_template li').off('click');
   var html = "";
   for (let i = 0; i < state.files_template_list.length; i++) {
     html += '<li>' + state.files_template_list[i] + '</li>';
   }
-  $('ul.listmenu_template').html(html);
-  $('ul.listmenu_template li*[data-file="' + state.current_file + '"]').addClass('active');
-  $('ul.listmenu_template li').on('click', function() {
+  $('ul#listmenu_template').html(html);
+  $('ul#listmenu_template li*[data-file="' + state.current_file + '"]').addClass('active');
+  $('ul#listmenu_template li').on('click', function() {
     /*
     var f = $(this).data('file');
     state.current_file = f;

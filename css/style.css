@@ -1,10 +1,15 @@
 *{padding:0;margin:0;}
 html,body{height:100%;font-family: 'Roboto', sans-serif;}
-#container{
-  display:flex;
-  flex-direction:column; /* The flexible items are displayed vertically, as a column */
-  height:100%;
-}
+
+/* layout */
+#container{display: flex;flex-direction:column;height:100%;}
+#header{}
+#bodycontent{flex-grow:1;display:flex;}
+#sidebar{display:flex;flex-direction:column;}
+#editor_area{flex-grow:1;}
+#sidebar_header{}
+#listmenu, #listmenu_template{flex-grow:1;}
+#add_input{}
 .col{position:relative;}
 #editor { 
   position: absolute;
@@ -21,33 +26,29 @@ html,body{height:100%;font-family: 'Roboto', sans-serif;}
 }
 .col.bigger{background-color:#ccc;}
 .sidebar{flex: 0 0 250px;height:100%;}
-.header{}
-.bodycontent{flex: 1;min-height:0;overflow:hidden;}
-.header .pill-nav{display:inline-block;white-space:nowrap;
+#header .pill-nav{display:inline-block;white-space:nowrap;
 border-right:3px double #ccc;}
-.header .pill-nav a{cursor:pointer;}
+#header .pill-nav a{cursor:pointer;}
 .listmenu, .listmenu_template {border-top: 1px solid #aaa;
-  height: calc(100% - 78px);
-  overflow: scroll;
 }
-.listmenu li, .listmenu_template li{
+#listmenu li, #listmenu_template li{
   display:block;
   padding:10px 10px;
   border-bottom:1px solid #aaa;
 }
 input.add_input{width:100%;padding:10px;display:none;}
-.listmenu li, .listmenu_template li{cursor:pointer;}
-.listmenu li:hover, .listmenu_template li:hover{background-color:#ddd;}
+#listmenu li, #listmenu_template li{cursor:pointer;}
+#listmenu li:hover, #listmenu_template li:hover{background-color:#ddd;}
 button{display:block;width:100%;padding:10px 0;cursor:pointer;}
-.sidebar_header button{
+#sidebar_header button{
   float:left;width:25%;
 }
-.sidebar_header button.active{
+#sidebar_header button.active{
   background-color: dodgerblue;
   color: white;
 }
 .close{clear:both;}
-.listmenu li.active{
+#listmenu li.active{
   background-color: dodgerblue !important;
   color: white;
 }

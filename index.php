@@ -14,7 +14,7 @@
 </head>
 <body>
   <div id="container">
-    <div class="header">
+    <div id="header">
       <div class="pill-nav editor_mode">
         <a id="button_logic" title="App logic"><i class="fas fa-project-diagram"></i></a>
         <a id="button_template" title="App template"><i class="far fa-file-code"></i></a>
@@ -31,23 +31,22 @@
         <a data-file="index.php">index.php</a>
       </div>
     </div>
-    <div class="grid bodycontent">
-      <div class="col sidebar">
-        <div class="sidebar_header">
+    <div id="bodycontent">
+      <div id="sidebar" class="col sidebar">
+        <div id="sidebar_header">
           <button data-dir="app/src/Controller" title="Controllers"><i class="fas fa-gamepad"></i></button>
           <button data-dir="app/src/Model" title="Models"><i class="fas fa-database"></i></button>
           <button data-dir="app/src" title="Services"><i class="fas fa-hand-holding"></i></button>
           <button data-dir="app/src/Middleware" title="Middlewares"><i class="fas fa-bullseye"></i></button>
           <div class="close"></div>
         </div>
-        <ul class="listmenu">
+        <ul id="listmenu">
         </ul>
-        <ul class="listmenu_template">
+        <ul id="listmenu_template">
         </ul>
-        <input class="add_input">
-        <p><button class="add">add</button></p>
+        <p id="add_input"><button class="add">add</button><input class="add_input"></p>
       </div>
-      <div class="col bigger">
+      <div id="editor_area" class="col bigger">
         <div class="editor_bar">&nbsp;</div>
         <div id="editor"></div>
       </div>
