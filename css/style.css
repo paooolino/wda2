@@ -8,7 +8,8 @@ html,body{height:100%;font-family: 'Roboto', sans-serif;}
 #sidebar{display:flex;flex-direction:column;}
 #editor_area{flex-grow:1;}
 #sidebar_header{}
-#listmenu, #listmenu_template{flex-grow:1;}
+#listmenu_container{flex-grow:1;overflow-y:scroll;height:0;}
+#listmenu, #listmenu_template{}
 #add_input{}
 .col{position:relative;}
 #editor { 

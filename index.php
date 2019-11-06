@@ -40,10 +40,12 @@
           <button data-dir="app/src/Middleware" title="Middlewares"><i class="fas fa-bullseye"></i></button>
           <div class="close"></div>
         </div>
-        <ul id="listmenu">
-        </ul>
-        <ul id="listmenu_template">
-        </ul>
+        <div id="listmenu_container">
+          <ul id="listmenu">
+          </ul>
+          <ul id="listmenu_template">
+          </ul>
+        </div>
         <p id="add_input"><button class="add">add</button><input class="add_input"></p>
       </div>
       <div id="editor_area" class="col bigger">

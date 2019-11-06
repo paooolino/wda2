@@ -78,12 +78,12 @@ function render() {
   // mode: template
   if (state.mode == 'template') {
     $('.topbuttons_f').hide();
-    $('.sidebar_header').hide();
+    $('#sidebar_header').hide();
     $('#listmenu').hide();
     $('#listmenu_template').show();
   } else {
     $('.topbuttons_f').show();
-    $('.sidebar_header').show();
+    $('#sidebar_header').show();
     $('#listmenu').show();
     $('#listmenu_template').hide();
   }
@@ -93,8 +93,8 @@ function render() {
   $('#header a*[data-file="' + state.current_file + '"]').addClass('active');
   
   // sidebutton
-  $('.sidebar_header button').removeClass('active');
-  $('.sidebar_header button*[data-dir="' + state.current_dir + '"]').addClass('active');
+  $('#sidebar_header button').removeClass('active');
+  $('#sidebar_header button*[data-dir="' + state.current_dir + '"]').addClass('active');
 
   // mode: logic/template button
   $('.editor_mode a').removeClass('active');
@@ -118,13 +118,10 @@ function render() {
   $('ul#listmenu').html(html);
   $('ul#listmenu li*[data-file="' + state.current_file + '"]').addClass('active');
   $('ul#listmenu li').on('click', function() {
-    /*
-    var f = $(this).data('file');
-    state.current_file = f;
+    state.current_file = $(this).data('file');
     state.show_file_input = false;
     render();
-    load_file();
-    */
+    loadCurrentFile();
   });
   
   // current template path list
@@ -136,13 +133,10 @@ function render() {
   $('ul#listmenu_template').html(html);
   $('ul#listmenu_template li*[data-file="' + state.current_file + '"]').addClass('active');
   $('ul#listmenu_template li').on('click', function() {
-    /*
-    var f = $(this).data('file');
-    state.current_file = f;
+    state.current_file = $(this).data('file');
     state.show_file_input = false;
     render();
-    load_file();
-    */
+    loadCurrentFile();
   });
 }
 
@@ -297,7 +291,7 @@ $('.add_input').on('keypress', function(e) {
 /**
  *  Action: click on sidebar header directory buttons
  */
-$('.sidebar_header button').on('click', function() {
+$('#sidebar_header button').on('click', function() {
   state.current_dir = $(this).data('dir');
   state.show_file_input = false;
   render();
