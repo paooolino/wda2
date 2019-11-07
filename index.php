@@ -46,7 +46,16 @@
           <ul id="listmenu_template">
           </ul>
         </div>
-        <p id="add_input"><button class="add">add</button><input class="add_input"></p>
+        <div id="sidebar_footer">
+          <div class="footer_buttons">
+            <button class="add_button">add</button>
+            <button class="delete_button">delete</button>
+            <button class="rename_button">rename</button>
+          </div>
+          <p id="add_input">
+            <input class="add_input">
+          </p>
+        </div>
       </div>
       <div id="editor_area" class="col bigger">
         <div class="editor_bar">&nbsp;</div>
