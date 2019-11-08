@@ -89,11 +89,17 @@ function render() {
     $('#sidebar_header').hide();
     $('#listmenu').hide();
     $('#listmenu_template').show();
+    if (state.files_template_list.length > 0) {
+      $('button.init_tpl').hide();
+    } else {
+      $('button.init_tpl').show();
+    }
   } else {
     $('.topbuttons_f').show();
     $('#sidebar_header').show();
     $('#listmenu').show();
     $('#listmenu_template').hide();
+    $('button.init_tpl').hide();
   }
   
   // topbutton
@@ -361,6 +367,19 @@ function delete_file() {
   });
 }
 
+function initialize_template() {
+  show_layer('init_tpl');
+  $.ajax({
+    url: 'php/init_tpl.php',
+    type: 'get',
+    dataType: 'json',
+    success: function(json) {
+      hide_layer('init_tpl');
+      loadCurrentTemplatePath();
+    }      
+  });
+}
+
 /**
  *  Actions functions
  */
@@ -433,6 +452,14 @@ $('.add_route').on('click', function() {
   }
 });
 
+/**
+ *  Action: initialize template button
+ */
+$('button.init_tpl').on('click', function() {
+  initialize_template();
+}); 
+ 
+ 
 /*
 function render() {
   console.log('render');

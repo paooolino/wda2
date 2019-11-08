@@ -41,6 +41,7 @@
           <div class="close"></div>
         </div>
         <div id="listmenu_container">
+          <button class="init_tpl">initialize template</button>
           <ul id="listmenu">
           </ul>
           <ul id="listmenu_template">

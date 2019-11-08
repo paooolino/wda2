@@ -11,20 +11,17 @@ function create_file($dir, $filename, $code) {
     file_put_contents($file, $code);
 }
   
-function checkEssentials() {
-  $essentials = [
-    "composer.json",
-    "index.php",
-    "settings.php",
-    "app/dependencies.php",
-    "app/routes.php",
-    "app/middleware.php",
-    "templates/default/css/style.css",
-    "templates/default/js/script.js",
-    "templates/default/partials/header.php",
-    "templates/default/partials/footer.php",
-    "templates/default/home.php"
-  ];
+function checkEssentials($essentials=null) {
+  if ($essentials == null) {
+    $essentials = [
+      "composer.json",
+      "index.php",
+      "settings.php",
+      "app/dependencies.php",
+      "app/routes.php",
+      "app/middleware.php"
+    ];
+  }
   foreach ($essentials as $f) {
     $filename = ROOT . $f;
 
@@ -37,6 +34,16 @@ function checkEssentials() {
       file_put_contents($filename, $code);
     }
   }
+}
+
+function initialize_template() {
+  checkEssentials([
+    "templates/default/css/style.css",
+    "templates/default/js/script.js",
+    "templates/default/partials/header.php",
+    "templates/default/partials/footer.php",
+    "templates/default/home.php"
+  ]);
 }
 
 function populate_template($tpl, $data) {
