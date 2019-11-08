@@ -24,6 +24,10 @@ html,body{height:100%;font-family: 'Roboto', sans-serif;}
 }
 
 .footer_buttons{display:flex;}
+#editor_buttons{background-color:#333;}
+#editor_buttons button{
+  width: auto;padding:0 5px;margin:1px;
+}
 
 .col{position:relative;}
 li.level-1{padding-left:20px !important;}

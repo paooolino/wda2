@@ -60,6 +60,9 @@
       <div id="editor_area" class="col bigger">
         <div id="editor_bar">
         </div>
+        <div id="editor_buttons">
+          <button class="add_route">+ route</button>
+        </div>
         <div id="editor_container">
           <div id="editor"></div>
         </div>

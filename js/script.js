@@ -343,6 +343,24 @@ function add_file() {
   }
 }
 
+function delete_file() {
+  show_layer('delete_file');
+  $.ajax({
+    url: 'php/delete.php',
+    type: 'post',
+    dataType: 'json',
+    data: {
+      file: state.current_file
+    },
+    success: function(json) {
+      hide_layer('delete_file');
+      state.current_file = 'app/routes.php';
+      loadCurrentDir();
+      loadCurrentFile();
+    }      
+  });
+}
+
 /**
  *  Actions functions
  */
@@ -385,6 +403,34 @@ $('#sidebar_header button').on('click', function() {
   state.show_file_input = false;
   render();
   loadCurrentDir();
+});
+
+/**
+ *  Action: click "delete" file button
+ */
+$('.delete_button').on('click', function() {
+  if (confirm('Stai per eliminare il file. Confermi?')) {
+    delete_file();
+  }
+});
+
+/**
+ *  Action: click "add_route" file button
+ */
+$('.add_route').on('click', function() {
+  var name = prompt("Inserisci il nome della route:");
+  if (name && name != '') {
+    var route_name = name.replace(/ /g, "_").toUpperCase();
+    var words = route_name.split('_');
+    words = words.map(function(item, index) {
+      var s = item.toLowerCase();
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    });
+    var class_name = words.join('');
+    var txt = "$app->get('/', 'WebApp\Controller\\" + class_name + "C')->setName('" + route_name + "');\r\n";
+    editor.session.insert(editor.getCursorPosition(), txt);
+    editor.focus();
+  }
 });
 
 /*

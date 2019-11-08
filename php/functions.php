@@ -56,6 +56,9 @@ function extract_deps($content) {
   
   $dependencies = file_get_contents(ROOT . "app/dependencies.php");
   $deps_line = find_between("return new $container(", $dependencies, ");");
+  if ($deps_line == "")
+    return [];
+  
   $deps_arr = explode(",", $deps_line);
   
   $result = array_map(function($item) {
