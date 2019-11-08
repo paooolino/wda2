@@ -58,8 +58,11 @@
         </div>
       </div>
       <div id="editor_area" class="col bigger">
-        <div class="editor_bar">&nbsp;</div>
-        <div id="editor"></div>
+        <div id="editor_bar">
+        </div>
+        <div id="editor_container">
+          <div id="editor"></div>
+        </div>
       </div>
     </div>
   </div>

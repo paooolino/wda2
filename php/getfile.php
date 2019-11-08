@@ -1,4 +1,5 @@
 <?php
+include("functions.php");
 /**
  *  @param string $file The file name to load.
  */
@@ -13,8 +14,11 @@ if (!$file) {
   $new = true;
 } 
 
+$deps = extract_deps($content);
+
 $result = [
   "new" => $new,
-  "content" => $content
+  "content" => $content,
+  "deps" => $deps
 ];
 echo json_encode($result);

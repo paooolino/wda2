@@ -45,3 +45,32 @@ function populate_template($tpl, $data) {
   }
   return $tpl;
 }
+
+function extract_deps($content) {
+  $result = [];
+  
+  // trova il nome del container
+  $namespace = trim(find_between("namespace", $content, ";"));
+  $className = trim(find_between("class", $content, "{"));
+  $container = $namespace . "\\" . $className;
+  
+  $dependencies = file_get_contents(ROOT . "app/dependencies.php");
+  $deps_line = find_between("return new $container(", $dependencies, ");");
+  $deps_arr = explode(",", $deps_line);
+  
+  $result = array_map(function($item) {
+    return [
+      "name" => trim(str_replace('$c->', "", $item))
+    ];
+  }, $deps_arr);
+  return $result;
+}
+
+function find_between($start, $s, $end) {
+  $found = "";
+  
+  $parts = explode($start, $s);
+  if (isset($parts[1])) $found = explode($end, $parts[1])[0];
+
+  return $found;
+}

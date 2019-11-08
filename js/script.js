@@ -67,6 +67,8 @@ var state = {
   current_dir: 'app/src/Controller',
   // lazy loaded template subdirs
   template_subdirs: {},
+  // editor bar dependencies of the current loaded file
+  file_deps: [],
   // others
   show_file_input: false,
   edited: false,
@@ -167,6 +169,22 @@ function render() {
     $('.delete_button').prop('disabled', true);
     $('.rename_button').prop('disabled', true);
   }
+  
+  // editor bar
+  var appendix = '';
+  if (state.edited === true)
+    appendix = '*';
+  var lines = [];
+  lines.push('<div>[' + state.current_file + ']' + appendix + '</div>');
+  if (state.file_deps.length > 0) {
+    var deps_html = 'Deps: ';
+    for (var i = 0; i < state.file_deps.length; i++) {
+      var dep_name = state.file_deps[i].name;
+      deps_html += '<span class="bc">' + dep_name + '</span>';
+    }
+    lines.push('<div>' + deps_html + '</div>');
+  }
+  $('#editor_bar').html(lines.join(''));
 }
 
 function render_subdir_list(dir, level) {
@@ -228,6 +246,7 @@ function loadCurrentFile() {
       var content = json.content;
       editor.session.setValue(content);
       state.edited = false;
+      state.file_deps = json.deps || [];
       hide_layer('loadCurrentFile');
       render();
     }
@@ -387,10 +406,7 @@ function render() {
   } else {
     $('.editor_bar').show();
   }
-  var appendix = '';
-  if (state.edited === true)
-    appendix = '*';
-  $('.editor_bar').html('&nbsp;[' + state.current_file + ']' + appendix);
+
 
 
 }
