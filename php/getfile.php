@@ -10,9 +10,15 @@ $content = file_get_contents(__DIR__ . "/../../" . $file);
 
 $deps = extract_deps($content);
 
-$controllers = [];
+$missing_controllers = [];
 if ($file == "app/routes.php") {
   $controllers = get_controllers_from_file(__DIR__ . "/../../" . $file);
+  $missing_controllers = array_values(array_filter($controllers, function($item) {
+    $ctrl = __DIR__ . '/../../app/src/Controller/' . $item . '.php';
+    if (!file_exists($ctrl))
+      return true;
+    return false;
+  }));
 }
 
 $notices = array_map(function($item) {
@@ -20,7 +26,7 @@ $notices = array_map(function($item) {
     "type" => "missing_controller",
     "name" => $item
   ];
-}, $controllers);
+}, $missing_controllers);
 
 $result = [
   "content" => $content,
