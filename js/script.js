@@ -29,6 +29,7 @@ function init() {
           $('#saving').hide();
           state.edited = false;
           render();
+          loadCurrentFile();
         } else {
           alert('WARNING: save failed.');
         }
@@ -69,6 +70,8 @@ var state = {
   template_subdirs: {},
   // editor bar dependencies of the current loaded file
   file_deps: [],
+  // notices
+  notices: [],
   // others
   show_file_input: false,
   edited: false,
@@ -191,6 +194,22 @@ function render() {
     lines.push('<div>' + deps_html + '</div>');
   }
   $('#editor_bar').html(lines.join(''));
+  
+  // notices
+  $('#editor_notices .bcbutton').off('click');
+  var html = '';
+  for (var i = 0; i < state.notices.length; i++) {
+    var notice = state.notices[i];
+    if (notice.type == 'missing_controller') {
+      html += '<div class="notice"><i class="fas fa-exclamation-triangle"></i> controller mancante [' + notice.name + '] <span data-name="' + notice.name + '" data-type="' + notice.type + '" class="bc bcbutton">Crealo</span></div>';
+    }
+  }
+  $('#editor_notices').html(html);
+  $('#editor_notices .bcbutton').on('click', function() {
+    if ($(this).data('type') == 'missing_controller') {
+      createController($(this).data('name'));
+    }
+  });
 }
 
 function render_subdir_list(dir, level) {
@@ -253,6 +272,7 @@ function loadCurrentFile() {
       editor.session.setValue(content);
       state.edited = false;
       state.file_deps = json.deps || [];
+      state.notices = json.notices;
       hide_layer('loadCurrentFile');
       render();
     }
@@ -380,6 +400,25 @@ function initialize_template() {
   });
 }
 
+function createController(name) {
+  show_layer('createController');
+  $.ajax({
+    url: 'php/create_controller.php',
+    type: 'post',
+    data: {
+      name: name
+    },
+    dataType: 'json',
+    success: function(json) {
+      state.current_dir = 'app/src/Controller';
+      state.current_file = state.current_dir + '/' + name + '.php';
+      hide_layer('createController');
+      loadCurrentDir();
+      loadCurrentFile();
+    }      
+  });
+}
+
 /**
  *  Actions functions
  */
@@ -446,7 +485,7 @@ $('.add_route').on('click', function() {
       return s.charAt(0).toUpperCase() + s.slice(1);
     });
     var class_name = words.join('');
-    var txt = "$app->get('/', 'WebApp\Controller\\" + class_name + "C')->setName('" + route_name + "');\r\n";
+    var txt = "$app->get('/', 'WebApp\\Controller\\" + class_name + "C')->setName('" + route_name + "');\r\n";
     editor.session.insert(editor.getCursorPosition(), txt);
     editor.focus();
   }

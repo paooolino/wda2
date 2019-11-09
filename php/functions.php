@@ -84,3 +84,17 @@ function find_between($start, $s, $end) {
 
   return $found;
 }
+
+function get_controllers_from_file($file) {
+  $content = php_strip_whitespace($file);
+  
+  $matches = [];
+  $pattern = "/WebApp\\\\Controller\\\\(.*?)'/";
+  $controllers = preg_match_all(
+    $pattern,
+    $content,
+    $matches
+  );
+  
+  return $matches[1];
+}

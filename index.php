@@ -67,6 +67,8 @@
         <div id="editor_container">
           <div id="editor"></div>
         </div>
+        <div id="editor_notices">
+        </div>
       </div>
     </div>
   </div>
