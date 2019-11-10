@@ -53,6 +53,8 @@ function populate_template($tpl, $data) {
   return $tpl;
 }
 
+// estrae le dipendenze da dependencies.php
+// per il container definito nel contenuto del file sorgente passato
 function extract_deps($content) {
   $result = [];
   
@@ -76,6 +78,13 @@ function extract_deps($content) {
   return $result;
 }
 
+// estrae le dipendenze passate nel costruttore
+function extract_needed_deps($content) {
+  $deps = find_between("public function __construct(", $content, ")");
+  $deps_arr = explode(',', $deps);
+  return $deps_arr;
+}
+
 function find_between($start, $s, $end) {
   $found = "";
   
@@ -83,6 +92,16 @@ function find_between($start, $s, $end) {
   if (isset($parts[1])) $found = explode($end, $parts[1])[0];
 
   return $found;
+}
+
+function list_dir_content($dir) {
+  $arr = scandir($dir);
+  $arr = array_values(array_filter($arr, function($item) {
+    if ($item == "." || $item == "..")
+      return false;
+    return true;
+  }));
+  return $arr;
 }
 
 function get_controllers_from_file($file) {

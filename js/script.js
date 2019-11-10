@@ -203,11 +203,22 @@ function render() {
     if (notice.type == 'missing_controller') {
       html += '<div class="notice"><i class="fas fa-exclamation-triangle"></i> controller mancante [' + notice.name + '] <span data-name="' + notice.name + '" data-type="' + notice.type + '" class="bc bcbutton">Crealo</span></div>';
     }
+    if (notice.type == 'missing_deps_entry') {
+      html += '<div class="notice"><i class="fas fa-exclamation-triangle"></i> manca la definizione del container per questa classe in dependencies.php</div>';
+    }
+    if (notice.type == 'missing_controller_deps') {
+      html += '<div class="notice"><i class="fas fa-exclamation-triangle"></i> manca la definizione del container per il controller: <b>' + notice.name + '</b>. <span data-index="' + i + '" data-type="' + notice.type + '" class="bc bcbutton">incollalo nell\'editor</span></div>';
+    }
   }
   $('#editor_notices').html(html);
   $('#editor_notices .bcbutton').on('click', function() {
     if ($(this).data('type') == 'missing_controller') {
       createController($(this).data('name'));
+    }
+    if ($(this).data('type') == 'missing_controller_deps') {
+      var txt = state.notices[$(this).data('index')].code;
+      editor.session.insert(editor.getCursorPosition(), txt);
+      editor.focus();
     }
   });
 }
@@ -275,6 +286,7 @@ function loadCurrentFile() {
       state.notices = json.notices;
       hide_layer('loadCurrentFile');
       render();
+      editor.resize();
     }
   });
 }
