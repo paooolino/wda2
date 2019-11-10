@@ -48,6 +48,19 @@ function init() {
     render();
   });
   
+  // jstree
+  $('#jstree_container').jstree({
+    'core' : {
+      'data' : {
+        'url' : 'php/getDirForTree.php',
+        'dataType': 'json',
+        'data' : function (node) {
+          return { 'id' : node.id };
+        }
+      }
+    }
+  });
+  
   // load current file
   loadCurrentFile();
   
@@ -55,7 +68,7 @@ function init() {
   loadCurrentDir();
   
   // load current template path
-  loadCurrentTemplatePath();
+  //loadCurrentTemplatePath();
   
   render();
 }
@@ -142,6 +155,7 @@ function render() {
   });
   
   // current template path list
+  /*
   $('ul#listmenu_template li').off('click');
   var html = "";
   for (let i = 0; i < state.files_template_list.length; i++) {
@@ -169,6 +183,7 @@ function render() {
       loadCurrentTemplateDir();
     }
   });
+  */
   
   // sidebar footer button availability
   if ($('#listmenu_container li.active').is(':visible')) {

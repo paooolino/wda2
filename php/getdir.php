@@ -16,8 +16,10 @@ if (!file_exists($path)) {
 }
 
 $arr = scandir($path);
-$arr = array_values(array_filter($arr, function($item) {
+$arr = array_values(array_filter($arr, function($item) use($path) {
   if ($item == "." || $item == "..")
+    return false;
+  if (is_dir($path . '/' . $item))
     return false;
   return true;
 }));

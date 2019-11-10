@@ -6,6 +6,7 @@
 <html>
 <head>
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
   
   <link rel="stylesheet" href="css/silver.css">
   <link rel="stylesheet" href="css/pill-nav.css">
@@ -45,6 +46,7 @@
           <ul id="listmenu">
           </ul>
           <ul id="listmenu_template">
+            <div id="jstree_container"></div>
           </ul>
         </div>
         <div id="sidebar_footer">
@@ -78,6 +80,7 @@
   </div>
   <script src="lib/jquery/jquery-3.4.1.min.js"></script>
   <script src="lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
