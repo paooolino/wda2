@@ -22,6 +22,8 @@ if (file_exists($path)) {
     return [
       "text" => $item,
       "children" => $is_dir ? true : false,
+      "type" => $is_dir ? "dir" : "file",
+      "icon" => $is_dir ? "far fa-folder color-folder" : "far fa-file color-file",
       "id" => $dir . "/" . $item
     ];
   }, $arr);

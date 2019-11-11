@@ -34,6 +34,9 @@ html,body{height:100%;font-family: 'Roboto', sans-serif;}
 .bcbutton{cursor:pointer;}
 .bcbutton:hover{background-color:#eee;}
 
+.color-folder{color:#da0;}
+.color-file{color:#88d;}
+
 .footer_buttons{display:flex;}
 #editor_buttons{background-color:#333;}
 #editor_buttons button{
@@ -61,6 +64,7 @@ li.level-1{padding-left:20px !important;}
 #header .pill-nav{display:inline-block;white-space:nowrap;
 border-right:3px double #ccc;}
 #header .pill-nav a{cursor:pointer;}
+
 .listmenu, .listmenu_template {border-top: 1px solid #aaa;
 }
 #listmenu li, #listmenu_template li{
@@ -68,9 +72,16 @@ border-right:3px double #ccc;}
   padding:10px 10px;
   border-bottom:1px solid #aaa;
 }
+#listmenu_template li.jstree-node{padding:0;}
+#listmenu_template li.jstree-last{border:none;}
+.jstree-default .jstree-clicked, .jstree-default .jstree-hovered  {
+  background-color: #ddd;
+}
 input.add_input{width:100%;padding:10px;display:none;}
 #listmenu li, #listmenu_template li{cursor:pointer;}
 #listmenu li:hover, #listmenu_template li:hover{background-color:#ddd;}
+#listmenu_template li.jstree-node:hover{background-color: transparent;}
+
 button{display:block;width:100%;padding:10px 0;cursor:pointer;}
 #sidebar_header button{
   float:left;width:25%;

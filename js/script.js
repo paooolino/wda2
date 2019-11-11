@@ -43,23 +43,39 @@ function init() {
     exec: save
   });
   editor.on('input', function(delta) {
-    console.log('input');
     state.edited = !editor.session.getUndoManager().isClean();
     render();
   });
   
   // jstree
-  $('#jstree_container').jstree({
-    'core' : {
-      'data' : {
-        'url' : 'php/getDirForTree.php',
-        'dataType': 'json',
-        'data' : function (node) {
-          return { 'id' : node.id };
+  $('#jstree_container')
+    .on('select_node.jstree', function (e, data) {
+      var item = data.instance.get_node(data.selected[0]).original;
+      if (item.type == 'file') {
+        state.current_file = data.selected[0];
+        state.show_file_input = false;
+        render();
+        loadCurrentFile();
+      }
+      /*
+      var i, j, r = [];
+      for(i = 0, j = data.selected.length; i < j; i++) {
+        r.push(data.instance.get_node(data.selected[i]).text);
+      }
+      $('#event_result').html('Selected: ' + r.join(', '));
+      */
+    })
+    .jstree({
+      'core' : {
+        'data' : {
+          'url' : 'php/getDirForTree.php',
+          'dataType': 'json',
+          'data' : function (node) {
+            return { 'id' : node.id };
+          }
         }
       }
-    }
-  });
+    });
   
   // load current file
   loadCurrentFile();
