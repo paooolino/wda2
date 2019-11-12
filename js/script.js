@@ -195,7 +195,10 @@ function render() {
   */
   
   // sidebar footer button availability
-  if ($('#listmenu_container li.active').is(':visible')) {
+  if (
+    $('#listmenu_container li.active').is(':visible')
+    || getSelectedTreeNode()
+  ) {
     $('.delete_button').prop('disabled', false);
     $('.rename_button').prop('disabled', false);
   } else {
@@ -288,6 +291,10 @@ function hide_layer(id) {
     delete(to[id]);
   }
   $('#loading_layer').hide();
+}
+
+function getSelectedTreeNode() {
+  return $('#jstree_container').jstree('get_node', $('#jstree_container').jstree('get_selected')).original;
 }
 
 /**
@@ -386,6 +393,18 @@ function add_file() {
     // check name
     // to do
     
+    var dir = state.current_dir;
+    if (state.mode == "template") {
+      var dir = 'templates/default/';
+      var item = getSelectedTreeNode();
+      if (item) {
+        if (item.type == 'dir')
+          dir = item.id;
+        if (item.type == 'file')
+          dir = item.id.split('/').slice(0, -1).join('/');
+      }
+    }
+    
     // save
     show_layer('add_file');
     $.ajax({
@@ -393,13 +412,16 @@ function add_file() {
       type: 'post',
       dataType: 'json',
       data: {
-        dir: state.current_dir,
+        dir: dir,
         file: $('.add_input').val()
       },
       success: function(json) {
         state.show_file_input = false;
         hide_layer('add_file');
-        loadCurrentDir();
+        if (state.mode == "logic")
+          loadCurrentDir();
+        if (state.mode == "template")
+          $('#jstree_container').jstree().refresh();
       }      
     });
   }
