@@ -51,9 +51,15 @@ function init() {
   $('#jstree_container')
     .on('select_node.jstree', function (e, data) {
       var item = data.instance.get_node(data.selected[0]).original;
+      if (item.type == 'dir') {
+        state.show_file_input = false;
+        state.show_file_input_rename = false;
+        render();
+      }
       if (item.type == 'file') {
         state.current_file = data.selected[0];
         state.show_file_input = false;
+        state.show_file_input_rename = false;
         render();
         loadCurrentFile();
       }
@@ -76,9 +82,6 @@ function init() {
   // load current dir
   loadCurrentDir();
   
-  // load current template path
-  //loadCurrentTemplatePath();
-  
   render();
 }
 
@@ -96,6 +99,7 @@ var state = {
   notices: [],
   // others
   show_file_input: false,
+  show_file_input_rename: false,
   edited: false,
   files_list: [],
   files_template_list: [],
@@ -146,6 +150,15 @@ function render() {
     $('.add_input').val('Senza nome');
     $('.add_input').select();
   }
+  // for rename
+  if (state.show_file_input_rename) {
+    $('.add_input').show();
+    if (state.mode == 'template')
+      $('.add_input').val(getSelectedTreeNode().text);
+    else if(state.mode == 'logic')
+      $('.add_input').val(state.current_file.split('/').slice(-1));
+    $('.add_input').select();
+  }
   
   // current dir list
   $('ul#listmenu li').off('click');
@@ -159,49 +172,22 @@ function render() {
   $('ul#listmenu li').on('click', function() {
     state.current_file = $(this).data('file');
     state.show_file_input = false;
+    state.show_file_input_rename = false;
     render();
     loadCurrentFile();
   });
   
-  // current template path list
-  /*
-  $('ul#listmenu_template li').off('click');
-  var html = "";
-  for (let i = 0; i < state.files_template_list.length; i++) {
-    var type = state.files_template_list[i].type;
-    var name = state.files_template_list[i].name;
-    var data_file = state.files_template_list[i]['data-file'];
-    var icon = '';
-    if (type == 'dir') icon = '<i class="far fa-folder"></i> ';
-    html += '<li data-file="' + data_file + '" data-type="' + type + '">' + icon + name + '</li>';
-  
-    // look for subdirs
-    html += render_subdir_list(data_file);
-  }
-  $('ul#listmenu_template').html(html);
-  $('ul#listmenu_template li[data-file="' + state.current_file + '"]').addClass('active');
-  $('ul#listmenu_template li').on('click', function() {
-    // may be directory or file
-    state.current_file = $(this).data('file');
-    state.show_file_input = false;
-    render();
-    if ($(this).data('type') == 'file') {
-      loadCurrentFile();
-    }
-    if ($(this).data('type') == 'dir') {
-      loadCurrentTemplateDir();
-    }
-  });
-  */
-  
   // sidebar footer button availability
+  var node = getSelectedTreeNode();
   if (
-    $('#listmenu_container li.active').is(':visible')
-    || getSelectedTreeNode()
+    (state.mode == 'logic' && $('#listmenu_container li.active').is(':visible'))
+    || (state.mode == 'template' && node && node.type == 'file') 
   ) {
+    // bottoni abilitati
     $('.delete_button').prop('disabled', false);
     $('.rename_button').prop('disabled', false);
   } else {
+    // bottoni disabilitati
     $('.delete_button').prop('disabled', true);
     $('.rename_button').prop('disabled', true);
   }
@@ -363,26 +349,6 @@ function loadCurrentTemplateDir() {
 }
 
 /**
- *  Loads template directory in listmenu_template
- */
-function loadCurrentTemplatePath() {
-  show_layer('loadCurrentTemplatePath');
-  $.ajax({
-    url: 'php/getdir_tpl.php',
-    type: 'post',
-    dataType: 'json',
-    data: {
-      dir: state.current_template_path
-    },
-    success: function(json) {
-      state.files_template_list = json.content;
-      hide_layer('loadCurrentTemplatePath');
-      render();
-    }
-  });
-}
-
-/**
  *  Adds a new file in the current directory
  */
 function add_file() {
@@ -413,11 +379,56 @@ function add_file() {
       dataType: 'json',
       data: {
         dir: dir,
+        mode: state.mode,
         file: $('.add_input').val()
       },
       success: function(json) {
         state.show_file_input = false;
+        state.show_file_input_rename = false;
         hide_layer('add_file');
+        if (state.mode == "logic")
+          loadCurrentDir();
+        if (state.mode == "template")
+          $('#jstree_container').jstree().refresh();
+      }      
+    });
+  }
+}
+
+/**
+ *  Renames the current selected file
+ */
+function rename_file() {
+  if (state.show_file_input_rename == false) {
+    state.show_file_input_rename = true;
+    render();
+  } else {
+    var file;
+    var newname;
+    
+    if (state.mode == "template") {
+      file = getSelectedTreeNode().id;
+      newname = $('.add_input').val();
+    }
+    if (state.mode == "logic") {
+      file = state.current_file;
+      newname = $('.add_input').val();
+    }
+    
+    // rename
+    show_layer('rename_file');
+    $.ajax({
+      url: 'php/rename.php',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        file: file,
+        newname: newname
+      },
+      success: function(json) {
+        state.show_file_input = false;
+        state.show_file_input_rename = false;
+        hide_layer('rename_file');
         if (state.mode == "logic")
           loadCurrentDir();
         if (state.mode == "template")
@@ -439,7 +450,11 @@ function delete_file() {
     success: function(json) {
       hide_layer('delete_file');
       state.current_file = 'app/routes.php';
-      loadCurrentDir();
+      if (state.mode == "logic")
+        loadCurrentDir();
+      if (state.mode == "template")
+        $('#jstree_container').jstree().refresh();
+      
       loadCurrentFile();
     }      
   });
@@ -455,7 +470,6 @@ function initialize_template() {
       hide_layer('init_tpl');
       $('#jstree_container').jstree().refresh();
       render();
-      //loadCurrentTemplatePath();
     }      
   });
 }
@@ -486,6 +500,8 @@ function createController(name) {
 // change editor mode
 $('.editor_mode a').on('click', function() {
   state.mode = this.id.replace('button_', '');
+  state.show_file_input = false;
+  state.show_file_input_rename = false;
   render();
 });
 
@@ -497,6 +513,7 @@ init();
 $('.topbuttons_f a').on('click', function() {
   state.current_file = $(this).data('file');
   state.show_file_input = false;
+  state.show_file_input_rename = false;
   render();
   loadCurrentFile();
 });
@@ -509,7 +526,10 @@ $('button.add_button').on('click', function() {
 });
 $('.add_input').on('keypress', function(e) {
   if (e.which == 13) {
-    add_file();
+    if (state.show_file_input)
+      add_file();
+    else if (state.show_file_input_rename)
+      rename_file();
   }
 });
 
@@ -519,6 +539,7 @@ $('.add_input').on('keypress', function(e) {
 $('#sidebar_header button').on('click', function() {
   state.current_dir = $(this).data('dir');
   state.show_file_input = false;
+  state.show_file_input_rename = false;
   render();
   loadCurrentDir();
 });
@@ -530,6 +551,13 @@ $('.delete_button').on('click', function() {
   if (confirm('Stai per eliminare il file. Confermi?')) {
     delete_file();
   }
+});
+
+/**
+ *  Action: click "rename" file button
+ */
+$('.rename_button').on('click', function() {
+  rename_file();
 });
 
 /**

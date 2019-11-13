@@ -75,7 +75,8 @@ border-right:3px double #ccc;}
 #listmenu_template li.jstree-node{padding:0;}
 #listmenu_template li.jstree-last{border:none;}
 .jstree-default .jstree-clicked, .jstree-default .jstree-hovered  {
-  background-color: #ddd;
+  background-color: dodgerblue !important;
+  color: white;
 }
 input.add_input{width:100%;padding:10px;display:none;}
 #listmenu li, #listmenu_template li{cursor:pointer;}
