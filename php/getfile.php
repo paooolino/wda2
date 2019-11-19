@@ -9,6 +9,7 @@ $file = $_POST["file"];
 $content = file_get_contents(__DIR__ . "/../../" . $file);
 
 $notices = [];
+$deps = [];
 
 // per il file routes, verifica che i controller definiti esistano
 if ($file == "app/routes.php") {
@@ -58,14 +59,13 @@ if (stristr($file, "app/src/Controller/") !== false) {
       "needed_deps" => $needed_deps
     ];
   }
-  
-  $result["deps"] = $deps;
 }
 
 
 
 $result = [
   "content" => $content,
-  "notices" => $notices
+  "notices" => $notices,
+  "deps" => $deps
 ];
 echo json_encode($result);

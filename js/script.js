@@ -29,7 +29,7 @@ function init() {
           $('#saving').hide();
           state.edited = false;
           render();
-          loadCurrentFile();
+          loadCurrentFile({replace_content:false});
         } else {
           alert('WARNING: save failed.');
         }
@@ -286,7 +286,7 @@ function getSelectedTreeNode() {
 /**
  *  Loads current file in editor
  */
-function loadCurrentFile() {
+function loadCurrentFile(opts) {
   show_layer('loadCurrentFile');
   $.ajax({
     url: 'php/getfile.php',
@@ -296,14 +296,16 @@ function loadCurrentFile() {
       file: state.current_file
     },
     success: function(json) {
-      var content = json.content;
-      editor.session.setValue(content);
+      if (!(opts && opts.replace_content == false)) {
+        var content = json.content;
+        editor.session.setValue(content);
+      }
       state.edited = false;
       state.file_deps = json.deps || [];
       state.notices = json.notices;
       hide_layer('loadCurrentFile');
       render();
-      editor.resize();
+      //editor.resize();
     }
   });
 }
