@@ -95,13 +95,16 @@ function find_between($start, $s, $end) {
 }
 
 function list_dir_content($dir) {
-  $arr = scandir($dir);
-  $arr = array_values(array_filter($arr, function($item) {
-    if ($item == "." || $item == "..")
-      return false;
-    return true;
-  }));
-  return $arr;
+  if (file_exists($dir)) {
+    $arr = scandir($dir);
+    $arr = array_values(array_filter($arr, function($item) {
+      if ($item == "." || $item == "..")
+        return false;
+      return true;
+    }));
+    return $arr;
+  }
+  return [];
 }
 
 function get_controllers_from_file($file) {
