@@ -50,7 +50,10 @@ if ($file == "app/dependencies.php") {
   }
 }
 
-if (stristr($file, "app/src/Controller/") !== false) {
+// per i controller e i middlewares, visualizza le dipendenze richieste
+if (stristr($file, "app/src/Controller/") !== false
+  || stristr($file, "app/src/Middleware/") !== false
+) {
   $deps = extract_deps($content);
   $needed_deps = extract_needed_deps($content);
   if (count($deps) == 0) {
