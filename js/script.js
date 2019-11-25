@@ -107,6 +107,11 @@ var state = {
   // path del templte di default
   current_template_path: 'templates/default'
 };
+function setState(obj) {
+  // to do: set state and save in session
+  // every state set should use this function
+  // to do: load state and set (in init)
+}
 
 /**
  *  Render function
