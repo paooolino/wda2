@@ -27,9 +27,14 @@ if (file_exists($path)) {
       "id" => $dir . "/" . $item
     ];
   }, $arr);
+  // ordina in modo da avere per prime le directories
   usort($arr, function($a, $b) {
-    if ($a["children"] != $b["children"])
+    if ($a["children"] != $b["children"]) {
       return $a["children"] === true ? -1 : 1;
+    }
+    if ($a["children"] == $b["children"]) {
+      return strcmp("" . $a["text"], "" . $b["text"]);
+    }
     return 0;
   });
 }
