@@ -11,7 +11,12 @@ class LoginService {
   /**
    * The password used for encryption function.
    */
-  const PASSWORD_ENCRYPTION = "Qof}zzW7;NAt(#l&BBxWI0T=9XR]dL8-)z~g_J+pFPbMdzuQPf({E_ysC?_{lHvq";
+  const ENCRYPTION_KEY = "Qof}zzW7;NAt(#l&BBxWI0T=9XR]dL8-)z~g_J+pFPbMdzuQPf({E_ysC?_{lHvq";
+  
+  /**
+   * The enryption method.
+   */
+  const ENCRYPTION_METHOD = "AES-256-CBC";
   
   /**
    * The authentication cookie name.
@@ -57,10 +62,15 @@ class LoginService {
   }
   
   private function encrypt($s) {
-    return openssl_encrypt($s, "AES-256-ECB", self::PASSWORD_ENCRYPTION);
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::ENCRYPTION_METHOD));
+    $encrypted = openssl_encrypt($s, self::ENCRYPTION_METHOD, self::ENCRYPTION_KEY, 0, $iv);
+    $encrypted .= ':' . base64_encode($iv);
+    return $encrypted;
   }
   
   private function decrypt($s) {
-    return openssl_decrypt($s, "AES-256-ECB", self::PASSWORD_ENCRYPTION);
+    $parts = explode(':', $s);
+    $decrypted = openssl_decrypt($parts[0], self::ENCRYPTION_METHOD, self::ENCRYPTION_KEY, 0, base64_decode($parts[1]));
+    return $decrypted;
   }
 }
