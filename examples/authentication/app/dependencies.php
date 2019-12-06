@@ -29,7 +29,7 @@ $container['login'] = function ($c) {
 //
 
 $container['WebApp\Middleware\AuthMiddleware'] = function ($c) {
-  return new WebApp\Middleware\AuthMiddleware();
+  return new WebApp\Middleware\AuthMiddleware($c->router, $c->login);
 };
 
 

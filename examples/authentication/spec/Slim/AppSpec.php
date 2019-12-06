@@ -12,7 +12,7 @@ use Slim\Http\Response;
 
 class AppSpec extends ObjectBehavior {
     
-  private function do_request($uri, $method) {
+  private function do_request($uri, $method, $post_params=[]) {
     $settings = require __DIR__ . '/../../settings.php';
     $this->beConstructedWith($settings);
     $container = $this->getContainer();
@@ -24,8 +24,8 @@ class AppSpec extends ObjectBehavior {
     
     $env = Environment::mock([
       'SCRIPT_NAME' => '/index.php',
-      'REQUEST_URI' => '/',
-      'REQUEST_METHOD' => 'GET',
+      'REQUEST_URI' => $uri,
+      'REQUEST_METHOD' => $method,
     ]);
     
     $uri = Uri::createFromEnvironment($env);
@@ -33,17 +33,47 @@ class AppSpec extends ObjectBehavior {
     $cookies = [];
     $serverParams = $env->all();
     $body = new RequestBody();
-    $req = new Request('GET', $uri, $headers, $cookies, $serverParams, $body);
+    $req = new Request($method, $uri, $headers, $cookies, $serverParams, $body);
+    if (!empty($post_params)) {
+      $req = $req->withParsedBody($post_params);
+    }
     $res = new Response();
     $resOut = $this->process($req, $res);
     
-    return $resOut->getBody()->__toString();
+    return $resOut;
   }
 
   function it_shows_form_in_home() {
-    $html = $this->do_request('/', 'GET');
+    $res = $this->do_request('/', 'GET');
 
-    $html->shouldContain("<form");
+    $res->getBody()->__toString()->shouldContain("<form");
   }
+  
+  function it_should_redirect_to_home_if_not_logged() {
+    $res = $this->do_request('/profilo', 'GET');
 
+    $res->getStatusCode()->shouldBe(302);
+    $res->getHeaderLine('Location')->shouldBe('/');
+  }
+  
+  function it_should_authenticate_and_redirect() {
+    $res = $this->do_request('/login', 'POST', [
+      "U" => "demo",
+      "P" => "demo"
+    ]);
+    
+    $res->getStatusCode()->shouldBe(302);
+    $res->getHeaderLine('Set-Cookie')->shouldStartWith('token=');
+    $res->getHeaderLine('Location')->shouldBe('/profilo');
+  }
+  
+  function it_should_not_authenticate() {
+    $res = $this->do_request('/login', 'POST', [
+      "U" => "demo",
+      "P" => "wrong password"
+    ]);
+    
+    $res->getStatusCode()->shouldBe(302);
+    $res->getHeaderLine('Location')->shouldBe('/message/login-failed');
+  }
 }

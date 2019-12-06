@@ -41,6 +41,15 @@ class LoginService {
     return $response;
   }
   
+  public function checkAuth($request) {
+    $auth_cookie = FigRequestCookies::get($request, self::AUTH_COOKIE_NAME);
+    if ($auth_cookie->getValue() !== null) {
+      return $this->is_valid_token($auth_cookie->getValue());
+    }
+    
+    return false;
+  }
+  
   private function createToken($time_info, $user_info) {
     $token = $this->encrypt(json_encode([
       "t" => $time_info,
@@ -59,6 +68,17 @@ class LoginService {
     );
     
     return $response;
+  }
+  
+  private function is_valid_token($s) {
+    $token = $this->decrypt($s);
+    $json_string = base64_decode($token);
+    $json = json_decode($json, true); 
+    if ($json !== false) {
+      return $json;
+    }
+    
+    return false;
   }
   
   private function encrypt($s) {
