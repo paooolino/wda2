@@ -20,13 +20,13 @@ class LoginPostCtr {
     // verifica se esiste un utente con U e P passate in POST
     $user = $this->UserModel->getUser($post["U"], $post["P"]);
     if (!$user)
-      return $response->withRedirect($this->router->pathFor("MESSAGE", [
+      return $response->withRedirect($this->router->urlFor("MESSAGE", [
         "id" => "login-failed"
       ]));
 
     // in caso positivo, setta il token (nel cookie e nell'attributo token del service login)
     $response = $this->login->setAuthToken($user, $response);
     
-    return $response->withRedirect($this->router->pathFor("PROFILO"));
+    return $response->withRedirect($this->router->urlFor("PROFILO"));
   }
 }

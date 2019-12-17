@@ -10,12 +10,14 @@ class AuthMiddleware {
     $this->login = $login;
   }
   
-  public function __invoke($request, $response, $next) {
+  public function __invoke($request, $handler) {
+    $response = $handler->handle($request);
+    
     $result = $this->login->checkAuth($request);
     if (!$result) {
-      return $response->withRedirect($this->router->pathFor("HOME"));
+      return $response->withRedirect($this->router->urlFor("HOME"));
     }
     
-    return $next($request, $response);
+    return $response;
   } 
 }

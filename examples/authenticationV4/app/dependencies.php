@@ -1,5 +1,7 @@
 <?php
 
+$container->set('router', $app->getRouteCollector()->getRouteParser());
+
 $container->set('view', function ($c) {
   $templatePath = __DIR__ . '/../templates/default';
   $templateUrl = "";
@@ -29,7 +31,7 @@ $container->set('login', function ($c) {
 //
 
 $container->set('WebApp\Middleware\AuthMiddleware', function ($c) {
-  return new WebApp\Middleware\AuthMiddleware($c->router, $c->login);
+  return new WebApp\Middleware\AuthMiddleware($c->get('router'), $c->get('login'));
 });
 
 
@@ -42,15 +44,15 @@ $container->set('WebApp\Controller\HomeCtr', function ($c) {
 });
 
 $container->set('WebApp\Controller\LoginPostCtr', function ($c) {
-  return new WebApp\Controller\LoginPostCtr($c->router, $c->login, $c->UserModel);
+  return new WebApp\Controller\LoginPostCtr($c->get('router'), $c->get('login'), $c->get('UserModel'));
 });
 
 $container->set('WebApp\Controller\MsgCtr', function ($c) {
-  return new WebApp\Controller\MsgCtr($c->view, $c->MessageModel);
+  return new WebApp\Controller\MsgCtr($c->get('view'), $c->get('MessageModel'));
 });
 
 $container->set('WebApp\Controller\ProfiloCtr', function ($c) {
-  return new WebApp\Controller\ProfiloCtr($c->view, $c->UserModel);
+  return new WebApp\Controller\ProfiloCtr($c->get('view'), $c->get('UserModel'));
 });
 
 
