@@ -1,4 +1,4 @@
-# Slim 4 + PHP-DI skeleton application
+# Slim 4 + PHP-DI skeleton application with Login feature
 
 This is my personal version of a skeleton application made by using Slim Php Framework v.4 and PHP-DI as dependency container.
 It is the result of a work starded with Slim3 in the past year. The focus is to keep things simple and clear and also be as beginner-friendly as possible. 
