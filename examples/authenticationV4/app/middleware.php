@@ -1,3 +1,4 @@
 <?php
+
 // Add application middleware here.
-// example: $app->add('WebApp\Middleware\AppInit');
+$app->add('WebApp\Middleware\AppInitMiddleware');

@@ -2,11 +2,11 @@
 namespace WebApp\Middleware;
 
 class AuthMiddleware {
-  private $router;
+  private $app;
   private $login;
   
-  public function __construct($router, $login) {
-    $this->router = $router;
+  public function __construct(\WebApp\AppService $app, \WebApp\LoginService $login) {
+    $this->app = $app;
     $this->login = $login;
   }
   
@@ -15,7 +15,7 @@ class AuthMiddleware {
     
     $result = $this->login->checkAuth($request);
     if (!$result) {
-      return $response->withRedirect($this->router->urlFor("HOME"));
+      return $response->withRedirect($this->app->router->urlFor("HOME"));
     }
     
     return $response;

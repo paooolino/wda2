@@ -1,11 +1,13 @@
 <?php
 namespace WebApp\Controller;
 
+use Slim\Views\PhpRenderer;
+
 class MsgCtr {
   private $view;
   private $MessageModel;
   
-  public function __construct($view, $MessageModel) {
+  public function __construct(PhpRenderer $view, \WebApp\Model\MessageModel $MessageModel) {
     $this->view = $view;
     $this->MessageModel = $MessageModel;
   }

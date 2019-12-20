@@ -5,7 +5,7 @@ class ProfiloCtr {
   private $view;
   private $UserModel;
   
-  public function __construct($view, $UserModel) {
+  public function __construct(\Slim\Views\Phprenderer $view, \WebApp\Model\UserModel $UserModel) {
     $this->view = $view;
     $this->UserModel = $UserModel;
   }

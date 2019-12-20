@@ -1,10 +1,11 @@
 <?php
 namespace WebApp\Controller;
+use Slim\Views\PhpRenderer;
 
 class HomeCtr {
   private $view;
   
-  public function __construct($view) {
+  public function __construct(PhpRenderer $view) {
     $this->view = $view;
   }
   
