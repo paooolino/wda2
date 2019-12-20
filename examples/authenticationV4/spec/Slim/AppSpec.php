@@ -3,41 +3,51 @@
 namespace spec\Slim;
 
 use PhpSpec\ObjectBehavior;
-use Slim\Http\Environment;
-use Slim\Http\Uri;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
+use Slim\Factory\AppFactory;
+use Slim\Psr7\Environment;
+use Slim\Psr7\Factory\UriFactory;
+use Slim\Psr7\Factory\StreamFactory;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Request;
 use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;
-use Dflydev\FigCookies\SetCookie;
 use Dflydev\FigCookies\Cookie;
+use Prophecy\Prophet;
 
 class AppSpec extends ObjectBehavior {
   
-  function let() {
-    $settings = require __DIR__ . '/../../settings.php';
-    $this->beConstructedWith($settings);
-    $container = $this->getContainer();
+  function let() { 
+    // set container and dependencies
+    $containerBuilder = new \DI\ContainerBuilder();
+    $containerBuilder = new \DI\ContainerBuilder();
+    require __DIR__ . '/../../app/dependencies.php';
+    $container = $containerBuilder->build();
+    AppFactory::setContainer($container);
+    
+    $this->beConstructedThrough(function() { return AppFactory::create(); });
+    
+    $this->addErrorMiddleware(true, false, false);
+    $this->addRoutingMiddleware();
     
     $app = $this;
-    require __DIR__ . '/../../app/dependencies.php';
     require __DIR__ . '/../../app/middleware.php';
-    require __DIR__ . '/../../app/routes.php';   
+    require __DIR__ . '/../../app/routes.php';
+
+    $this->addRoutingMiddleware();    
   }
   
   private function do_request($uri, $method, $post_params=[], $cookies=[]) {  
     $env = Environment::mock([
       'SCRIPT_NAME' => '/index.php',
       'REQUEST_URI' => $uri,
-      'REQUEST_METHOD' => $method,
+      'REQUEST_METHOD' => $method
     ]);
-    
-    $uri = Uri::createFromEnvironment($env);
-    $headers = Headers::createFromEnvironment($env);
-    $serverParams = $env->all();
-    $body = new RequestBody();
+    $uri = (new UriFactory())->createFromGlobals($env);
+    $headers = Headers::createFromGlobals($env);
+    $serverParams = $env;
+    $body = (new StreamFactory())->createStream();
     $req = new Request($method, $uri, $headers, $cookies, $serverParams, $body);
     if (!empty($post_params)) {
       $req = $req->withParsedBody($post_params);
@@ -48,10 +58,9 @@ class AppSpec extends ObjectBehavior {
       }
     }
     
-    $res = new Response();
-    $resOut = $this->process($req, $res);
+    $response = $this->handle($req);
     
-    return $resOut;
+    return $response;
   }
   
   function it_shows_form_in_home() {
@@ -102,7 +111,7 @@ class AppSpec extends ObjectBehavior {
       "token" => "malformed token value"
     ]);
     
-    echo $res->getBody()->getWrappedObject();
+    //echo $res->getBody()->getWrappedObject();
     $res->getStatusCode()->shouldBe(302);
     $res->getHeaderLine('Location')->shouldBe('/');
   }
