@@ -9,14 +9,14 @@ class MessageModel {
   public function __construct() {
     $this->messages = [
       "login-failed" => [
-        "title" => "Errore",
-        "body" => "Credenziali errate."
+        "title" => "Error",
+        "body" => "Invalid credentials."
       ]
     ];
     
     $this->defaultMessage = [
-      "title" => "Errore sconosciuto",
-      "body" => "Si è verificato un errore non gestito."
+      "title" => "Unknown error",
+      "body" => "There was an unhandled error."
     ];
   }
   

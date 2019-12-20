@@ -1,7 +1,7 @@
 <?php
 namespace WebApp\Controller;
 
-class ProfiloCtr {
+class ProfileCtr {
   private $view;
   private $UserModel;
   

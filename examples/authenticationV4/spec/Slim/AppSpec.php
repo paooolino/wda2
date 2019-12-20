@@ -70,7 +70,7 @@ class AppSpec extends ObjectBehavior {
   }
   
   function it_should_redirect_to_home_if_not_logged() {
-    $res = $this->do_request('/profilo', 'GET');
+    $res = $this->do_request('/profile', 'GET');
 
     $res->getStatusCode()->shouldBe(302);
     $res->getHeaderLine('Location')->shouldBe('/');
@@ -84,16 +84,16 @@ class AppSpec extends ObjectBehavior {
     
     $res->getStatusCode()->shouldBe(302);
     $res->getHeaderLine('Set-Cookie')->shouldStartWith('token=');
-    $res->getHeaderLine('Location')->shouldBe('/profilo');
+    $res->getHeaderLine('Location')->shouldBe('/profile');
     
     $cookie = FigResponseCookies::get($res->getWrappedObject(), 'token');
     $cookies = [];
     $cookies[$cookie->getName()] = $cookie->getValue();
     
-    $res = $this->do_request('/profilo', 'GET', [], $cookies);
+    $res = $this->do_request('/profile', 'GET', [], $cookies);
     
     $res->getStatusCode()->shouldBe(200);
-    $res->getBody()->__toString()->shouldContain("<h1>Profilo utente</h1>");
+    $res->getBody()->__toString()->shouldContain("<h1>User profile</h1>");
   }
   
   function it_should_not_authenticate_wrong_credentials() {
@@ -107,7 +107,7 @@ class AppSpec extends ObjectBehavior {
   }
   
   function it_should_redirect_home_if_invalid_cookie() {
-    $res = $this->do_request('/profilo', 'GET', [], [
+    $res = $this->do_request('/profile', 'GET', [], [
       "token" => "malformed token value"
     ]);
     

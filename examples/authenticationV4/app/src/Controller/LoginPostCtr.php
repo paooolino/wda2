@@ -17,16 +17,16 @@ class LoginPostCtr {
   public function __invoke($request, $response, $args) {  
     $post = $request->getParsedBody();
     
-    // verifica se esiste un utente con U e P passate in POST
+    // see if a user with the provided credentials exists
     $user = $this->UserModel->getUser($post["U"], $post["P"]);
     if (!$user)
       return $response->withRedirect($this->app->router->urlFor("MESSAGE", [
         "id" => "login-failed"
       ]));
 
-    // in caso positivo, setta il token (nel cookie e nell'attributo token del service login)
+    // if ok, sets the token (in cookie and also in the login service instance)
     $response = $this->login->setAuthToken($user, $response);
     
-    return $response->withRedirect($this->app->router->urlFor("PROFILO"));
+    return $response->withRedirect($this->app->router->urlFor("PROFILE"));
   }
 }
